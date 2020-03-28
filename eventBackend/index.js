@@ -167,8 +167,6 @@ app.post(apiPath + version + '/events/:eventId/bookings', (req, res) => {
 app.use(basicAuth({ authorizer: myAuthorizer, authorizeAsync: true }));
 
 function myAuthorizer(username, password, cb) {
-    console.log('stored sha: ' + Users.pass)
-    console.log('input pass: ' + sha256(password))
     if (username == Users.user && sha256(password) == Users.pass) {
         cb(null, true)
     } else {
