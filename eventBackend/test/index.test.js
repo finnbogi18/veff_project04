@@ -54,7 +54,6 @@ describe('Endpoint tests', () => {
         chai.request('http://localhost:3000/api/v1').get('/events').end( (err, res) => {
             chai.expect(res).to.have.status(200);
             chai.expect(res).to.be.json;
-            // chai.expect(res.body).to.be.a('object');
             chai.expect(res.body).to.be.an('array');
             chai.expect(Object.keys(res.body).length).to.be.eql(1);
             done();
@@ -98,28 +97,40 @@ describe('Endpoint tests', () => {
         });
     });
 
-    it("POST /users failure", function (done) {
-        chai.request('http://localhost:3000/api/v1')
-            .post('/users')
-            .set('Content-type', 'application/json')
-            .send({'age':'10'})
-            .end( (err, res) => {
-            chai.expect(res).to.have.status(400);
+    it("GET /events/:eventId/bookings", function (done) {
+        chai.request('http://localhost:3000/api/v1').get('/events/' + eventId + "/bookings").end( (err, res) => {
+            chai.expect(res).to.have.status(200);
             chai.expect(res).to.be.json;
-            chai.expect(res.body).to.be.a('object');
-            chai.expect(res.body).to.have.property('message').eql('No username defined.');
+            chai.expect(res.body).to.be.an('array');
             chai.expect(Object.keys(res.body).length).to.be.eql(1);
             done();
         });
     });
-});
+
+    it("GET /events/:eventId/bookings/:bookingId", function (done) {
+        chai.request('http://localhost:3000/api/v1').get('/events/'+ eventId + '/bookings/' + bookingId).end( (err, res) => {
+            chai.expect(res).to.have.status(200);
+            chai.expect(res).to.be.json;
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(Object.keys(res.body).length).to.be.eql(6);
+            chai.expect(res.body).to.have.property('firstName').eql('Jane');
+            chai.expect(res.body).to.have.property('lastName').eql('Doe');
+            chai.expect(res.body).to.have.property('spots').eql(2);
+            chai.expect(res.body).to.have.property('email').eql('jane@doe.com');
+            chai.expect(res.body).to.have.property('_id').to.be.eql(String(bookingId));
+            chai.expect(res.body).to.have.property('tel').to.be.an('string');
+            done();
+        });
+    });
 
     it("DELETE /events/:eventid/bookings/:bookingid", function (done) {
         chai.request('http://localhost:3000/api/v1')
-        .delete('/events/' + String(eventId) + 'bookings/' + String(bookingId))
+        .delete('/events/' + eventId + '/bookings/' + String(bookingId))
         .auth('admin', 'supersecret')
         .end((err, res) => {
         chai.expect(res).to.have.status(200);
         done();
     });
 });
+});
+
