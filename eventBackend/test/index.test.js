@@ -75,7 +75,6 @@ describe('Endpoint tests', () => {
             chai.expect(res.body).to.have.property('description').to.be.an('string');
             chai.expect(res.body).to.have.property('location').to.be.an('string');
             chai.expect(res.body).to.have.property('bookings').to.be.an('array');
-
             done();
         });
     });
