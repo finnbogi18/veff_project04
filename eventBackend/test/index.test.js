@@ -99,28 +99,24 @@ describe('Endpoint tests', () => {
         });
     });
 
-    it("POST /users failure", function (done) {
+    it("DELETE /events/:eventid/bookings/:bookingid Successful", function (done) {
         chai.request('http://localhost:3000/api/v1')
-            .post('/users')
-            .set('Content-type', 'application/json')
-            .send({'age':'10'})
-            .end( (err, res) => {
-            chai.expect(res).to.have.status(400);
-            chai.expect(res).to.be.json;
-            chai.expect(res.body).to.be.a('object');
-            chai.expect(res.body).to.have.property('message').eql('No username defined.');
-            chai.expect(Object.keys(res.body).length).to.be.eql(1);
-            done();
-        });
-    });
-});
-
-    it("DELETE /events/:eventid/bookings/:bookingid", function (done) {
-        chai.request('http://localhost:3000/api/v1')
-        .delete('/events/' + String(eventId) + 'bookings/' + String(bookingId))
+        .delete('/events/' + eventId + '/bookings/' + bookingId)
         .auth('admin', 'supersecret')
         .end((err, res) => {
         chai.expect(res).to.have.status(200);
         done();
+        });
+    });
+
+    it("DELETE /events/:eventid/bookings/:bookingid Unsuccessful", function (done) {
+        chai.request('http://localhost:3000/api/v1')
+        .delete('/events/' + eventId + '/bookings/' + bookingId)
+        .auth('admin', 'wrongpassword')
+        .end((err, res) => {
+        chai.expect(res).to.not.have.status(200);
+        done();
+        });
     });
 });
+
