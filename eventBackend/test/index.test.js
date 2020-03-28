@@ -98,6 +98,26 @@ describe('Endpoint tests', () => {
         });
     });
 
+    it("POST /events/:eventid/bookings", function (done) {
+        chai.request('http://localhost:3000/api/v1')
+            .post('/events/' + eventId + '/bookings')
+            .set('Content-type', 'application/json')
+            .send({	'firstName': 'Finnbogi', 'lastName':'Jakobsson', 'tel':'5812345', 'email':'bogi@bogi.is', 'spots': 2})
+            .end( (err, res) => {
+            chai.expect(res).to.have.status(201);
+            chai.expect(res).to.be.json;
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('firstName').eql('Finnbogi');
+            chai.expect(res.body).to.have.property('lastName').eql('Jakobsson');
+            chai.expect(res.body).to.have.property('tel').eql('5812345');
+            chai.expect(res.body).to.have.property('email').eql('bogi@bogi.is');
+            chai.expect(res.body).to.have.property('spots').eql(2);
+            chai.expect(res.body).to.have.property('_id');
+            chai.expect(Object.keys(res.body).length).to.be.eql(6);
+            done();
+        });
+    });
+
     it("DELETE /events/:eventid/bookings/:bookingid Successful", function (done) {
         chai.request('http://localhost:3000/api/v1')
         .delete('/events/' + eventId + '/bookings/' + bookingId)
