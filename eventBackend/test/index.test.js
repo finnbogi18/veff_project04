@@ -117,7 +117,7 @@ describe('Endpoint tests', () => {
 
     it("DELETE /events/:eventid/bookings/:bookingid", function (done) {
         chai.request('http://localhost:3000/api/v1')
-        .delete('/events/' + eventId + 'bookings/' + bookingId)
+        .delete('/events/' + String(eventId) + 'bookings/' + String(bookingId))
         .auth('admin', 'supersecret')
         .end((err, res) => {
         chai.expect(res).to.have.status(200);
