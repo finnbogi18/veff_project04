@@ -106,3 +106,13 @@ describe('Endpoint tests', () => {
         });
     });
 });
+
+    it("DELETE /events/:eventid/bookings/:bookingid", function (done) {
+        chai.request('http://localhost:3000/api/v1')
+        .delete('/events/' + eventId + 'bookings/' + bookingId)
+        .auth('admin', 'supersecret')
+        .end((err, res) => {
+        chai.expect(res).to.have.status(200);
+        done();
+    });
+});
