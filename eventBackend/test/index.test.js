@@ -122,15 +122,24 @@ describe('Endpoint tests', () => {
             done();
         });
     });
-
-    it("DELETE /events/:eventid/bookings/:bookingid", function (done) {
+    it("DELETE /events/:eventid/bookings/:bookingid Successful", function (done) {
         chai.request('http://localhost:3000/api/v1')
-        .delete('/events/' + eventId + '/bookings/' + String(bookingId))
+        .delete('/events/' + eventId + '/bookings/' + bookingId)
         .auth('admin', 'supersecret')
         .end((err, res) => {
         chai.expect(res).to.have.status(200);
         done();
+        });
     });
-});
+
+    it("DELETE /events/:eventid/bookings/:bookingid Unsuccessful", function (done) {
+        chai.request('http://localhost:3000/api/v1')
+        .delete('/events/' + eventId + '/bookings/' + bookingId)
+        .auth('admin', 'wrongpassword')
+        .end((err, res) => {
+        chai.expect(res).to.not.have.status(200);
+        done();
+        });
+    });
 });
 
