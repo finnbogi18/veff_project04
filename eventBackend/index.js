@@ -29,7 +29,7 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }, 
 });
 
 // Only supported user for this example, not quite sure if the users are stored in the database
-var Users = {'user':'admin', 'pass':'f75778f7425be4db0369d09af37a6c2b9a83dea0e53e7bd57412e4b060e607f7'};
+var User = {'user':'admin', 'pass':'f75778f7425be4db0369d09af37a6c2b9a83dea0e53e7bd57412e4b060e607f7'};
 
 // Create Express app
 var app = express();
@@ -167,7 +167,7 @@ app.post(apiPath + version + '/events/:eventId/bookings', (req, res) => {
 app.use(basicAuth({ authorizer: myAuthorizer, authorizeAsync: true }));
 
 function myAuthorizer(username, password, cb) {
-    if (username == Users.user && sha256(password) == Users.pass) {
+    if (username == User.user && sha256(password) == User.pass) {
         cb(null, true)
     } else {
         cb(null, false)
