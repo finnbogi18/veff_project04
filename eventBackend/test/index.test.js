@@ -54,7 +54,7 @@ describe('Endpoint tests', () => {
         chai.request('http://localhost:3000/api/v1').get('/events').end( (err, res) => {
             chai.expect(res).to.have.status(200);
             chai.expect(res).to.be.json;
-            chai.expect(res.body).to.be.a('object');
+            // chai.expect(res.body).to.be.a('object');
             chai.expect(res.body).to.be.an('array');
             chai.expect(Object.keys(res.body).length).to.be.eql(1);
             done();
@@ -66,8 +66,16 @@ describe('Endpoint tests', () => {
             chai.expect(res).to.have.status(200);
             chai.expect(res).to.be.json;
             chai.expect(res.body).to.be.a('object');
-            chai.expect(Object.keys(res.body).length).to.be.eql(4);
-            chai.expect()
+            chai.expect(Object.keys(res.body).length).to.be.eql(8);
+            chai.expect(res.body).to.have.property('name').eql('Test Event');
+            chai.expect(res.body).to.have.property('capacity').eql(10);
+            chai.expect(res.body).to.have.property('startDate');
+            chai.expect(res.body).to.have.property('endDate');
+            chai.expect(res.body).to.have.property('_id').to.be.eql(String(eventId));
+            chai.expect(res.body).to.have.property('description').to.be.an('string');
+            chai.expect(res.body).to.have.property('location').to.be.an('string');
+            chai.expect(res.body).to.have.property('bookings').to.be.an('array');
+
             done();
         });
     });
